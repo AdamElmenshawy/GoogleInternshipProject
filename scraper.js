@@ -44,7 +44,7 @@ axios.get(url)
   .catch(error => {
     console.error('Error fetching the website:', error);
   });
-'; // Replace with the target website
+// Replace with the target website
 
 // Step 2: Fetch the website content
 axios.get(url)
