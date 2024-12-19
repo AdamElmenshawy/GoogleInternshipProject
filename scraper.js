@@ -1,37 +1,61 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-const url = 'https://source.android.com/docs/security/bulletin/'; 
+const url = 'https://source.android.com/docs/security/bulletin/2024-12-01'; 
 
 axios.get(url)
   .then(response => {
     const $ = cheerio.load(response.data);
+    console.log(response.data);
 
-//     const headings = [];
-//     $('h1, h2, h3').each((index, element) => {
-//       headings.push($(element).text());
-//     });
+    // Initialize an object to store the data
+    const securityData = [];
 
-//     console.log('Headings:', headings);
+    // Loop through all affected components
+    $('span.devsite-heading[role="heading"]').each((index, headingElement) => {
+      const componentName = $(headingElement).text().trim();
+      console.log(componentName);
 
-//     const paragraphs = [];
-//     $('p').each((index, element) => {
-//       paragraphs.push($(element).text());
-//     });
+      // Initialize an object for this component
+      const componentData = {
+        component: componentName,
+        cves: []
+      };
 
-//     console.log('Paragraphs:', paragraphs);
+      // Find the table(s) containing CVEs for this component
+      $(headingElement).nextUntil('span.devsite-heading').each((i, tableElement) => {
+        if ($(tableElement).hasClass('devsite-table-wrapper')) {
+          // Extract CVE details from the table
+          const cveDetails = [];
+          $(tableElement).find('tr').each((index, row) => {
+            const cveId = $(row).find('td').eq(0).text().trim();
+            const cveSeverity = $(row).find('td').eq(1).text().trim();
+            const cveDescription = $(row).find('td').eq(2).text().trim();
+            const affectedVersions = $(row).find('td').eq(3).text().trim();
+            
+            if (cveId) {
+              cveDetails.push({
+                cveId,
+                severity: cveSeverity,
+                description: cveDescription,
+                affectedVersions
+              });
+            }
+          });
 
-   
-    const links = [];
-    $('a').each((index, element) => {
-      const link = $(element).attr('href');
-      const text = $(element).text();
-      if(link && link.startsWith("/docs/security/bulletin/")) {
-        links.push({ text, link });
-}
+          // Add the CVE details to the component data
+          componentData.cves = componentData.cves.concat(cveDetails);
+        }
+      });
+
+      // Add the component data to the securityData array
+      if (componentData.cves.length > 0) {
+        securityData.push(componentData);
+      }
     });
 
-    console.log('Links:', links);
+    // Log the organized data
+    console.log('Security Data:', JSON.stringify(securityData, null, 2));
   })
   .catch(error => {
     console.error('Error fetching the website:', error);
