@@ -1,53 +1,61 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-const url = 'https://source.android.com/docs/security/bulletin/2024-10-01';
+const url = 'https://source.android.com/docs/security/bulletin/2024-12-01'; 
 
 axios.get(url)
   .then(response => {
     const $ = cheerio.load(response.data);
+    console.log(response.data);
 
-    const cveDetails = [];
+    // Initialize an object to store the data
+    const securityData = [];
 
-    // Locate the table containing the CVE entries. Adjust the selector based on the actual HTML.
-    $('table').each((index, table) => {
-      // Iterate through rows in the table
-      $(table).find('tr').each((index, row) => {
-        const cells = $(row).find('td');
+    // Loop through all affected components
+    $('span.devsite-heading[role="heading"]').each((index, headingElement) => {
+      const componentName = $(headingElement).text().trim();
+      console.log(componentName);
 
-        // Check if the row contains the necessary number of columns (for CVE details)
-        if (cells.length >= 5) {
-          const cveId = $(cells[0]).text().trim();  // CVE ID (e.g., CVE-2024-40673)
-          const reference = $(cells[1]).text().trim();  // Reference (e.g., A-309938635)
-          const type = $(cells[2]).text().trim();  // Type (e.g., RCE)
-          const severity = $(cells[3]).text().trim();  // Severity (e.g., High)
-          const versions = $(cells[4]).text().trim();  // Updated AOSP Versions (e.g., 12, 12L, 13, 14)
+      // Initialize an object for this component
+      const componentData = {
+        component: componentName,
+        cves: []
+      };
 
-          // Create a structured CVE entry object
-          if (cveId && reference && type && severity && versions) {
-            cveDetails.push({
-              bulletin: '2024-10-01',  // Hardcoded bulletin date for this example
-              cve: cveId,
-              reference: reference,
-              type: type,
-              severity: severity,
-              updated_versions: versions.split(',').map(v => v.trim()),  // Split by commas and trim any extra spaces
-              link: `${url}#${cveId.replace('CVE-', '').replace('.', '-')}`,  // Link to specific CVE entry
-              patch_description: 'Description not extracted in this example',  // Placeholder for patch description
-            });
-          }
+      // Find the table(s) containing CVEs for this component
+      $(headingElement).nextUntil('span.devsite-heading').each((i, tableElement) => {
+        if ($(tableElement).hasClass('devsite-table-wrapper')) {
+          // Extract CVE details from the table
+          const cveDetails = [];
+          $(tableElement).find('tr').each((index, row) => {
+            const cveId = $(row).find('td').eq(0).text().trim();
+            const cveSeverity = $(row).find('td').eq(1).text().trim();
+            const cveDescription = $(row).find('td').eq(2).text().trim();
+            const affectedVersions = $(row).find('td').eq(3).text().trim();
+            
+            if (cveId) {
+              cveDetails.push({
+                cveId,
+                severity: cveSeverity,
+                description: cveDescription,
+                affectedVersions
+              });
+            }
+          });
+
+          // Add the CVE details to the component data
+          componentData.cves = componentData.cves.concat(cveDetails);
         }
       });
+
+      // Add the component data to the securityData array
+      if (componentData.cves.length > 0) {
+        securityData.push(componentData);
+      }
     });
 
-    // Format the extracted data into the required structure
-    const data = {
-      version: 1,
-      content: cveDetails
-    };
-
-    // Log the JSON output for the CVE details
-    console.log('CVE Details:', JSON.stringify(data, null, 2));
+    // Log the organized data
+    console.log('Security Data:', JSON.stringify(securityData, null, 2));
   })
   .catch(error => {
     console.error('Error fetching the website:', error);
