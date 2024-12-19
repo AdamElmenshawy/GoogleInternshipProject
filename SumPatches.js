@@ -1,8 +1,16 @@
 import axios from "axios";
+import dotenv from "dotenv";
+
+// Load environment variables from a .env file
+dotenv.config();
 
 const OSV_API_URL = "https://api.osv.dev/v1/vulns/"; // Base URL for OSV API
 const GEMINI_API_URL = "https://api.gemini.openai.com/v1/process"; // Replace with the correct Gemini API endpoint
-const geminiApiKey = "AIzaSyBc_m3ylPtp3EVpPBeI4gBRkqpduTNryv8"; // Gemini API Key
+const geminiApiKey = process.env.GEMINI_API_KEY; // Load API key from environment variable
+
+if (!geminiApiKey) {
+    throw new Error("Gemini API Key is missing. Please set GEMINI_API_KEY in your environment.");
+}
 
 // Function to fetch JSON data from the URL
 async function fetchJsonData(url) {
@@ -72,7 +80,7 @@ async function processWithGeminiApi(vulnerabilities) {
                     {
                         headers: {
                             'Content-Type': 'application/json',
-                            Authorization: `Bearer ${geminiApiKey}`, // Use Gemini API Key
+                            Authorization: `Bearer ${geminiApiKey}`, // Use Gemini API Key from environment
                         },
                     }
                 );
