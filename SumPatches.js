@@ -1,125 +1,148 @@
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from "axios";
 import dotenv from "dotenv";
 
 // Load environment variables from a .env file
 dotenv.config();
 
-const OSV_API_URL = "https://api.osv.dev/v1/vulns/"; // Base URL for OSV API
-const GEMINI_API_URL = "https://api.gemini.openai.com/v1/process"; // Replace with the correct Gemini API endpoint
-const geminiApiKey = process.env.GEMINI_API_KEY; // Load API key from environment variable
+const OSV_API_URL = "https://api.osv.dev/v1/vulns/";
+const geminiApiKey = process.env.GEMINI_API_KEY;
 
 if (!geminiApiKey) {
     throw new Error("Gemini API Key is missing. Please set GEMINI_API_KEY in your environment.");
 }
 
-// Function to fetch JSON data from the URL
-async function fetchJsonData(url) {
+// Initialize Gemini client
+const genAI = new GoogleGenerativeAI(geminiApiKey);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+// Fetch JSON data from the URL
+export async function fetchJsonData(url) {
     try {
         const response = await axios.get(url);
         return response.data;
     } catch (error) {
-        console.error('Error fetching JSON data:', error.message);
+        console.error("Error fetching JSON data:", error.message);
         throw error;
     }
 }
 
-// Function to process vulnerabilities and fetch OSV and Gemini details
-async function processVulnerabilities(data) {
-    try {
-        if (!data.vulnerabilities) {
-            throw new Error('Invalid JSON structure: Missing vulnerabilities object');
-        }
-
-        const vulnerabilities = [];
-        // Flatten the vulnerabilities array with relevant details
-        for (const date in data.vulnerabilities) {
-            const patchesForDate = data.vulnerabilities[date];
-            patchesForDate.forEach(vuln => {
+// Extract vulnerabilities from the JSON file
+export function extractVulnerabilities(data) {
+    const vulnerabilities = [];
+    for (const date in data.vulnerabilities) {
+        const patchesForDate = data.vulnerabilities[date];
+        patchesForDate.forEach((vuln) => {
+            const identifiers = vuln.asb_identifiers || [];
+            identifiers.forEach((id) => {
                 vulnerabilities.push({
-                    id: vuln.id || 'Unknown ID',
-                    description: vuln.description || 'No description available',
-                    severity: vuln.severity || 'Unknown severity',
-                    fixedIn: (vuln.references || [])
-                        .filter(ref => ref.type === 'FIX')
-                        .map(ref => ref.url).join(', ') || 'No specific fix URL provided.',
+                    id,
+                    description: vuln.description || "No description available",
+                    severity: vuln.severity || "Unknown severity",
+                    components: vuln.components ? vuln.components.join(", ") : "No components available",
                     date,
                 });
             });
-        }
+        });
+    }
+    return vulnerabilities;
+}
 
-        // Fetch details from OSV and process them through Gemini API
-        const processedVulnerabilities = await processWithGeminiApi(vulnerabilities);
-        console.log('Processed vulnerabilities:', processedVulnerabilities);
+// Fetch detailed information about an identifier from the OSV API
+export async function fetchOSVDetails(osvId) {
+    try {
+        const response = await axios.get(`${OSV_API_URL}${osvId}`);
+        return response.data;
     } catch (error) {
-        console.error('Error processing vulnerabilities:', error.message);
-        throw error;
+        console.error(`Error fetching details for OSV ID ${osvId}:`, error.message);
+        return null;
     }
 }
 
-// Function to fetch OSV details and run them through Gemini API
-async function processWithGeminiApi(vulnerabilities) {
+// Sleep function to pause execution for a given time in milliseconds
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Process OSV data through Gemini AI to get a summary
+export async function processWithGemini(osvDetails) {
     try {
-        const results = vulnerabilities.map(async (vuln) => {
-            const vulnId = vuln.id;
-            if (!vulnId || vulnId === 'Unknown ID') {
-                console.warn('Skipping vulnerability with missing or unknown ID.');
-                return null;
-            }
+        const prompt = `Analyze and summarize this security vulnerability in clear, non-technical terms:\n\n${JSON.stringify(osvDetails, null, 2)}`;
+        const result = await model.generateContent(prompt);
 
-            try {
-                // Fetch details from OSV API
-                const response = await axios.get(`${OSV_API_URL}${vulnId}`);
-                const osvDetails = response.data;
+        // Log the full response to debug
+        console.log("Gemini API Response:", JSON.stringify(result, null, 2));
 
-                // Run OSV details through Gemini API
-                const geminiResponse = await axios.post(
-                    GEMINI_API_URL,
-                    {
-                        cveDetails: osvDetails, // Send OSV details as payload
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${geminiApiKey}`, // Use Gemini API Key from environment
-                        },
-                    }
-                );
+        // Check if the result contains the text property, or adjust accordingly
+        const summary = result.response ? result.response.text() : "No summary returned";
 
-                return {
-                    id: vulnId,
-                    description: vuln.description,
-                    severity: vuln.severity,
-                    fixedIn: vuln.fixedIn,
-                    date: vuln.date,
-                    osvDetails,
-                    geminiOutput: geminiResponse.data, // Include processed Gemini API output
-                };
-            } catch (error) {
-                console.error(`Error processing vulnerability ID ${vulnId}:`, error.message);
-                return null;
-            }
+        // Log the generated summary for debugging
+        console.log("Generated Summary:", summary);
+
+        return summary;
+    } catch (error) {
+        console.error("Error processing data with Gemini AI:", error.message);
+        return "Error generating summary.";
+    }
+}
+
+// Process vulnerabilities with rate limiting
+export async function processVulnerabilities(data) {
+    const vulnerabilities = extractVulnerabilities(data);
+    const results = [];
+    let requestCount = 0;
+
+    for (const vuln of vulnerabilities) {
+        console.log(`Processing OSV ID: ${vuln.id}`);
+        
+        const osvDetails = await fetchOSVDetails(vuln.id);
+        if (!osvDetails) {
+            console.warn(`No details found for OSV ID: ${vuln.id}`);
+            continue;
+        }
+
+        const geminiSummary = await processWithGemini(osvDetails);
+        
+        // If there's no summary, log this for further debugging
+        if (!geminiSummary || geminiSummary === "Error generating summary.") {
+            console.warn(`No summary generated for OSV ID: ${vuln.id}`);
+        }
+
+        results.push({
+            ...vuln,
+            osvDetails,
+            geminiSummary,
         });
 
-        // Await all queries and filter out null results
-        const processedResults = await Promise.all(results);
-        return processedResults.filter(result => result !== null);
-    } catch (error) {
-        console.error('Error processing vulnerabilities with Gemini API:', error.message);
-        throw error;
+        // Increment request count
+        requestCount++;
+
+        // If 15 requests have been made, wait for 1 minute before continuing
+        if (requestCount > 1 && requestCount % 15 == 0) {
+            console.log("15 requests made. Sleeping for 1 minute...");
+            await sleep(61000); // Sleep for 1 minute (61,000 ms)
+            // requestCount = 0; // Reset the request count after sleeping
+        }
     }
+
+    console.log("Processing complete. Processed vulnerabilities:", results.length);
+    return results;
 }
 
 // Main function to run the workflow
 async function main() {
-    const jsonUrl = 'https://storage.googleapis.com/osv-android-api/v1/android_sdk_34.json';
+    const jsonUrl = "https://storage.googleapis.com/osv-android-api/v1/android_sdk_34.json";
+
     try {
-        console.log('Fetching JSON data...');
+        console.log("Fetching JSON data...");
         const jsonData = await fetchJsonData(jsonUrl);
 
-        console.log('Processing vulnerabilities...');
-        await processVulnerabilities(jsonData);
+        console.log("Processing vulnerabilities...");
+        const processedVulnerabilities = await processVulnerabilities(jsonData);
+
+        console.log("Final Output:", JSON.stringify(processedVulnerabilities, null, 2));
     } catch (error) {
-        console.error('An error occurred:', error.message);
+        console.error("An error occurred:", error.message);
     }
 }
 
