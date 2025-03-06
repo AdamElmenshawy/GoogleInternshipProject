@@ -5038,5 +5038,125 @@
     "date": "2023-07-05",
     "summary": "This report (CVE-2023-21672) describes a high-severity security vulnerability in a component of Qualcomm's Android software (specifically, the \"agm\" component).  This vulnerability existed in older versions of the software and allowed potential attackers to exploit a weakness in how the software handles closing sessions.  This could have led to various security issues, though the exact consequences aren't specified.  The vulnerability was patched on July 5th, 2023, so updating your Android device's software to a sufficiently recent version is crucial to eliminate this risk.\n",
     "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-276751076",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2023-07-05",
+    "summary": "This report (CVE-2023-24851) describes a serious security vulnerability in the software that controls Wi-Fi on some Android devices using Qualcomm chips.  The flaw exists in how the device handles data sent over Wi-Fi.  An attacker could potentially exploit this weakness to compromise the device, possibly leading to data theft or other malicious actions.  This is considered a \"high severity\" vulnerability.\n\nQualcomm has released updates to fix this problem.  Android device manufacturers should include these fixes in software updates they release for affected devices.  Users should ensure their devices are updated with the latest security patches to protect themselves.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-280374982",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2023-07-05",
+    "summary": "This Android security vulnerability (CVE-2022-32636 and CVE-2023-20755) is a high-severity issue affecting certain Android devices.  The vulnerability existed since the very beginning (\"SoCVersion:0\") and allowed attackers to potentially completely compromise (\"EoP\" - Escalation of Privilege) the device.  A fix was released on July 5th, 2023 (\"SoCVersion:2023-07-05\").  Users should update their Android devices to the latest security patch to protect themselves.  The exact component affected is unknown (\":unknown:\").\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-280380543",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2023-07-05",
+    "summary": "This report (CVE-2023-20754) describes a high-severity security vulnerability in the Android operating system.  It existed in all versions of Android from its very beginning (SoCVersion:0) until a fix was released on July 5th, 2023 (SoCVersion:2023-07-05).  The vulnerability could allow attackers to completely compromise (\"EoP\" -  Elevation of Privilege) an affected device.  The exact nature of the vulnerability is not specified in this summary, only that it's serious and has been patched.  Android users should update their devices to the latest software version to protect against this flaw.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-281905774",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2023-07-05",
+    "summary": "This vulnerability (CVE-2021-0948) affects Android devices.  A part of the PowerVR graphics driver (software that controls the graphics processor) can leak sensitive internal information to apps.  This happens because the driver sometimes gives apps access to uninitialized (meaning, it contains random leftover data) memory within the system. This uninitialized memory *could* contain private data.  The vulnerability has been fixed in Android software updated on July 5th, 2023.  Therefore, updating your Android device is crucial to protect yourself.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-283489460",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2023-07-05",
+    "summary": "This report (CVE-2021-29256) describes a high-severity security vulnerability in the Android operating system.  The vulnerability existed in various Android devices from their initial release (SoCVersion:0) until a security patch was released on July 5th, 2023 (SoCVersion:2023-07-05).  The exact nature of the vulnerability within the Android system is unknown (\":unknown:\"), but it's serious enough to warrant immediate updating of affected devices to the July 5th, 2023, patch or later.  Failing to update leaves Android devices at risk.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-253167854",
+    "severity": "high",
+    "components": "kernel",
+    "date": "2023-07-05",
+    "summary": "This Android security vulnerability (CVE-2022-42703) is a high-severity flaw in the Android kernel's memory management.  It's caused by a programming error where the system tries to use a piece of memory that has already been released (a \"use after free\" error).  This can allow a malicious program already running on the device to gain higher-level access (escalate privileges) and potentially take complete control of the device.  Importantly, this vulnerability doesn't require any user interaction to be exploited; it can be triggered automatically.  A software update (released July 5th, 2023) has fixed the problem.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-268589017",
+    "severity": "high",
+    "components": "kernel",
+    "date": "2023-07-05",
+    "summary": "This Android vulnerability (CVE-2023-25012) is a serious flaw in the Android kernel's handling of a specific type of game controller (Bigben).  Due to a programming error called a \"race condition\" and \"use after free,\" the system can be tricked into accessing a part of its memory that has already been released.  This allows an attacker on the same device to gain higher privileges than they should have, essentially taking control of the device without needing a password or any user interaction.  The problem has been fixed in a software update.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-275041864",
+    "severity": "high",
+    "components": "kernel",
+    "date": "2023-07-05",
+    "summary": "This Android security vulnerability (CVE-2023-21255) is a serious flaw in the Android kernel's binder component.  The problem stems from a programming error where the system attempts to use a piece of memory *after* it has already been released (a \"use after free\" error).  This can corrupt the system's memory, potentially allowing a malicious app or process to gain elevated privileges on the device without needing any user interaction or additional permissions.  Essentially, an attacker could exploit this to take complete control of the device.  A fix was released on July 5th, 2023.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "PUB-A-264663832",
+    "severity": "moderate",
+    "components": "kernel",
+    "date": "2023-07-05",
+    "summary": "This vulnerability (CVE-2023-21400) affects the Android kernel.  A flaw in how the kernel's internal code handles requests (specifically within the `io_uring` component) allows for a security problem.  Because of improper locking mechanisms,  an attacker could potentially corrupt the kernel's memory.  This could be exploited to gain complete control of the affected Android device without requiring any user interaction.  The vulnerability was patched on July 5th, 2023.  The severity is rated as \"Moderate.\"\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "PUB-A-274172774",
+    "severity": "moderate",
+    "components": "kernel",
+    "date": "2023-07-05",
+    "summary": "This vulnerability (CVE-2023-35693) is a software flaw in the Android operating system's kernel.  Specifically, it's a \"use after free\" error in a part of the code that manages the file system. This means the system tries to use a piece of memory that has already been released, leading to potential memory corruption.\n\nBecause of this corruption, an attacker could potentially gain higher privileges on a device—essentially taking control of the device.  Importantly, this doesn't require any action from the user; the vulnerability can be exploited automatically.  Android released a fix (patch) on July 5th, 2023.  The severity is rated as \"moderate.\"\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-272073598",
+    "severity": "moderate",
+    "components": "vendor",
+    "date": "2023-07-05",
+    "summary": "This report (CVE-2023-26083) describes a moderate security vulnerability in the Android operating system.  It existed in various Android devices from their initial release up until July 5th, 2023.  The specific component affected isn't precisely identified (\"unknown\"), but  a software update released on July 5th, 2023, fixed the problem.  This vulnerability could potentially allow attackers to compromise the device, although the exact impact isn't fully detailed in this summary.  Android users should ensure their devices are updated to the July 5th, 2023, patch or later to protect themselves.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "PUB-A-264422251",
+    "severity": "moderate",
+    "components": "vendor",
+    "date": "2023-07-05",
+    "summary": "This vulnerability (CVE-2023-21641) is a moderate-severity security flaw in the Android operating system's core code (specifically, the part that handles the display).  Before a July 5th, 2023, software update, a problem existed in how the system verified certain requests.  This weakness could potentially have allowed a malicious app to gain unauthorized access to sensitive information or functionality, though exploiting it would likely require a sophisticated attack.  The vulnerability has been patched; updating your Android device to the latest software version is recommended to fix this issue.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-174737879",
+    "severity": "high",
+    "components": "kernel",
+    "date": "2023-08-05",
+    "summary": "This Android security vulnerability (CVE-2020-29374) is a serious flaw in the Android kernel's memory management.  Because of a timing issue (a \"race condition\"),  a malicious app or program could potentially overwrite data in the system's memory in an unauthorized way. This could allow the attacker to gain higher privileges on the device without needing any user interaction or special permissions beforehand – essentially, taking control of the phone.  This vulnerability was fixed in an Android kernel update released on August 5th, 2023.  Users should update their devices to the latest Android version to address this risk.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-227655299",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2023-08-05",
+    "summary": "This vulnerability (CVE-2022-34830) is a high-severity security flaw in the Android operating system.  It existed from the very beginning of a particular system-on-a-chip (SoC) version, affecting many Android devices, and was only fixed on August 5th, 2023.  The exact nature of the vulnerability isn't specified (\"Unknown type\"), but because it's rated \"High\" severity, it could potentially allow an attacker to compromise a device's security.  To be protected, users need to update their Android devices to the August 5th, 2023, or later security patch level.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-285686353",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2023-08-05",
+    "summary": "This vulnerability (CVE-2023-20780) is a serious security flaw found in the Android operating system.  It existed in Android devices from their initial release (SoCVersion:0) until a fix was released on August 5th, 2023 (SoCVersion:2023-08-05).  The exact component affected isn't specified (\":unknown:\"), but the vulnerability is rated as \"High\" severity, meaning it could be exploited to potentially compromise the affected device.  To be safe, Android users should update their devices to the August 5th, 2023, or later security patch.\n",
+    "modelVersion": "gemini-1.5-flash"
   }
 ]
