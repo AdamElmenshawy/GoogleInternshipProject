@@ -9478,5 +9478,245 @@
     "date": "2024-01-05",
     "summary": "Error generating summary.",
     "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-292001469",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This Android security vulnerability (CVE-2023-21165) allows an attacker to take complete control of an affected device.  The problem is a programming error within the Android system's memory management. This error essentially allows the attacker to reuse a piece of memory that has already been freed, leading to unpredictable behavior and potentially the execution of malicious code.  No user interaction is required for the attack, and it can be exploited even without special permissions.  The vulnerability was fixed in Android devices with SoCVersion 2024-01-05 or later.  The severity is rated as \"High\".\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-294872878",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report describes a high-severity security vulnerability (CVE-2023-33108) in the graphics processing component of certain Android devices using Qualcomm chips.  The vulnerability existed in software responsible for managing graphics tasks and could potentially allow an attacker to cause the device to crash or behave unexpectedly.  This was fixed in a software update released January 5th, 2024.  Users of affected devices should update their software to the latest version to mitigate this risk.  The exact nature of how an attacker might exploit the vulnerability isn't specified in a readily understandable way, but the potential consequences are significant enough to warrant immediate patching.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-303101624",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This security vulnerability (CVE-2023-33113) is a high-severity flaw affecting certain Qualcomm-based Android devices.  It exists in the core code of the device's operating system (the Linux kernel).  The vulnerability allows a malicious app or process to potentially crash the system or gain unauthorized access. This is due to a problem in how the system handles communication with specific hardware components (\"gunyah\" and \"haven\").  A fix was released on January 5th, 2024, and users should update their devices to the latest software version to address this issue.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-303101664",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This vulnerability (CVE-2023-43514) is a high-severity security flaw affecting certain Qualcomm-based Android devices.  It exists in the device's core operating system (the Linux kernel).  The flaw allows a malicious app to potentially gain unauthorized access to system memory and possibly take control of the device.  This is because of a weakness in how the system handles memory allocation and deallocation.  A software update (patch) released on January 5th, 2024, fixes this problem.  Users of affected devices should update their software as soon as possible.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-308188337",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This Android security vulnerability (CVE-2023-5427) is a high-severity issue that existed in various Android devices from their initial release (SoCVersion:0) until a fix was released on January 5th, 2024 (SoCVersion:2024-01-05).  The exact nature of the vulnerability is unknown (\"Unknown\" type), but it's serious enough to be categorized as \"High\" severity.  Android users needed to update their devices to the January 5th, 2024, software update or later to eliminate this risk.  The lack of specific details about the vulnerability means it could affect different parts of the system.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-309364195",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This Android security vulnerability (CVE-2023-32874) allows attackers to completely take control of an affected device.  The vulnerability existed in various Android devices from their initial release (SoCVersion:0) until a fix was released on January 5th, 2024 (SoCVersion:2024-01-05).  This is considered a **high-severity** issue, meaning it poses a significant risk.  To be protected, Android users need to update their devices to the January 5th, 2024, or later security patch level.  The exact component within Android that's vulnerable is unknown (\"unknown:\").\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-309367791",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report (CVE-2023-32872) describes a serious security vulnerability (High severity) in the Android operating system.  The vulnerability existed in the system's core (indicated by \":unknown:\" package) from its initial release (SoCVersion:0) until a fix was released on January 5th, 2024 (SoCVersion:2024-01-05).  The exact nature of the vulnerability isn't specified in this summary, only that it's a type of \"End of Protection\" (EoP) flaw, meaning it allows attackers to bypass security measures already in place.  Android users should update their devices to the January 5th, 2024, or later security patch to protect themselves.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311273933",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report describes a serious security vulnerability (CVE-2023-48352) in the Android operating system.  It's a denial-of-service (DoS) vulnerability, meaning an attacker could exploit it to crash or disable an Android device.  This vulnerability existed from the very earliest versions of a specific Android system-on-a-chip (SoC)  until a fix was released on January 5th, 2024.  Android devices using affected SoCs before that date were vulnerable to this high-severity issue, which has since been patched.  The exact component affected within the Android system is unknown.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311273934",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This Android security vulnerability (CVE-2023-48351) is a high-severity issue that could cause a denial-of-service (DoS) attack.  This means a malicious actor could potentially crash or freeze an Android device, making it unusable.  The vulnerability existed in Android devices from the very beginning (SoCVersion:0) and was fixed on January 5th, 2024 (SoCVersion:2024-01-05).  Updating your Android device's operating system to the latest version is crucial to patching this vulnerability and preventing a potential attack.  The exact component affected within Android is unknown (\":unknown:\").\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311279652",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report describes a serious security vulnerability (CVE-2023-48349) affecting some Android devices.  The problem exists in an unknown part of the Android system and could cause a denial of service (DoS), meaning the device might become unusable or crash.  This vulnerability existed in Android devices from the very beginning (SoCVersion:0) and was only fixed on January 5th, 2024 (SoCVersion:2024-01-05).  Android users should update their devices to the latest software version to protect themselves.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311279655",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report (CVE-2023-48350) describes a serious security flaw (High severity) in some Android devices.  The vulnerability exists in an unspecified part of the Android system (\":unknown:\") and could cause a denial-of-service (DoS) attack.  This means an attacker could potentially crash or render the device unusable.  The problem existed in Android devices from their initial release (SoCVersion:0) until a fix was released on January 5th, 2024 (SoCVersion:2024-01-05).  To be protected, users need to update their Android devices with the latest security patches.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311279656",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report describes a serious security vulnerability (CVE-2023-48341/CVE-2023-48348) affecting Android devices.  The vulnerability could cause a denial-of-service (DoS) attack, meaning an attacker could potentially crash or freeze the device, rendering it unusable.  This flaw existed in various Android devices (specified by \"SoCVersion\") from their initial release (\"SoCVersion:0\") until a software update on January 5th, 2024 (\"SoCVersion:2024-01-05\").  The vulnerability is rated as \"High\" severity, meaning it poses a significant risk.  Android users should update their devices to the January 5th, 2024, software update or later to resolve this issue.  The exact component affected within Android is not specified in this data (\"package: :unknown:\").\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311282174",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report (CVE-2023-48344) describes a high-severity security vulnerability in Android.  It's a denial-of-service (DoS) flaw, meaning an attacker could crash or disable affected devices.  The vulnerability existed in Android's system software from its earliest versions (SoCVersion:0) and was fixed on January 5th, 2024 (SoCVersion:2024-01-05).  Android users should update their devices to the latest software version to protect themselves.  The exact component affected within Android is unknown (\":unknown:\").\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311288747",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report describes a serious security vulnerability (CVE-2023-48342 and CVE-2023-48343) affecting Android devices.  The vulnerability allows attackers to cause a denial-of-service (DoS) attack, meaning they could crash the device and make it unusable.  This vulnerability existed from the very first version of a certain Android system-on-a-chip (SoC) and was fixed on January 5th, 2024.  Android device manufacturers should have updated their devices to address this issue.  The severity of this vulnerability is considered \"High\".\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311288752",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This Android security vulnerability (CVE-2023-48341/CVE-2023-48348) is a high-severity issue that could cause a denial-of-service (DoS).  Simply put, a flaw in the Android system's code (affecting various devices since the very beginning, up to a fix released on January 5th, 2024) could potentially crash or freeze the device, making it unusable.  An update to the Android system's core software (SoC) is required to fix this problem.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311290653",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This Android vulnerability (CVE-2023-48342 and CVE-2023-48343) is a serious issue that could cause devices to crash and become unusable (a Denial of Service, or DoS attack).  It existed in Android devices from their initial release (SoCVersion:0) until a security update was released on January 5th, 2024 (SoCVersion:2024-01-05).  Anyone using an Android device that hadn't been updated by that date was potentially vulnerable.  The exact component affected is unknown (\"unknown:\").  The vulnerability is rated as \"High\" severity.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-311290655",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report describes a serious (High severity) security vulnerability (CVE-2023-48340) affecting Android devices.  The vulnerability could cause a denial-of-service (DoS) attack, meaning an attacker could potentially crash or disable the device's functionality.  The problem existed in the Android system software from its earliest versions (SoCVersion:0) and was fixed on January 5th, 2024 (SoCVersion:2024-01-05).  Android users should update their devices to the latest software version to protect themselves.  The exact component within Android that's affected is unknown (\":unknown:\").\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "PUB-A-303107435",
+    "severity": "moderate",
+    "components": "vendor",
+    "date": "2024-01-05",
+    "summary": "This report (CVE-2023-33111) describes a moderate security vulnerability in some Android devices.  The problem existed in the system's software from its earliest versions (SoCVersion:0) up until January 5th, 2024 (SoCVersion:2024-01-05).  After that date, a software update fixed the vulnerability.  The exact nature of the vulnerability is unknown (\"Unknown\" type) but it's important to update your Android device to ensure you have the latest security patches, specifically those released on or after January 5th, 2024, to protect against it.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-230492947",
+    "severity": "high",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android security vulnerability (CVE-2024-0036) is a high-severity flaw that allows an app to bypass security restrictions designed to prevent apps running in the background from launching other apps.  This is due to a coding error in the system's activity management.  An attacker could exploit this to gain unauthorized access to more system privileges, even without needing the user to do anything or having special permissions beforehand.  The problem affects several Android versions (11, 12, 12L, 13, and 14), but has been patched in updates released on February 1st, 2024.  Users should update their Android devices to the latest version to address this vulnerability.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-276898739",
+    "severity": "high",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android security vulnerability (CVE-2024-0030) exists in the Bluetooth software.  A flaw in how the system checks boundaries of data can cause it to accidentally read data it shouldn't.  This could expose some internal information from your device.  No user interaction is required for this to happen, and it doesn't require any extra permissions beyond what the Bluetooth system already has.  The problem has been fixed in Android versions 13 and 14.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-279055389",
+    "severity": "high",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android security vulnerability (CVE-2023-40093) is a high-severity flaw affecting how Android versions 11 through 14 handle PDF files.  A programming error in the system's PDF processing component allows for unintended parts of a PDF file to be revealed.  This means sensitive information from the file might be exposed to someone who has access to the device, even without needing to do anything special or gain extra permissions.  The issue has been patched in updates released on February 1st, 2024, so updating your Android device is crucial to fix it.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-294609150",
+    "severity": "high",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android security vulnerability (CVE-2024-0033) is a serious issue related to how Android handles memory.  A programming error in the way Android manages shared memory (\"ashmem\") allows an attacker to potentially take control of the device.  This doesn't require any user action or special permissions; it can be exploited silently.  The problem has been fixed in updated versions of Android.  Users should update their Android operating systems to the latest versions to protect their devices.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-300007708",
+    "severity": "high",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android security vulnerability (CVE-2024-0040) is a serious flaw in the way Android's media handling code processes certain data packets.  A problem in the `setParameter` function within a specific file (`MtpPacket.cpp`) allows an attacker to potentially read data outside of its designated memory area. This is called a heap buffer overflow and could lead to an attacker accessing sensitive information on your device.  Importantly, this can happen remotely, meaning the attacker doesn't need physical access or your interaction to exploit the vulnerability.  The issue has been fixed in updated versions of Android (versions 11, 12, 12L, 13, and 14).  Users should update their devices to the latest Android versions to protect themselves.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-300741186",
+    "severity": "high",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android security vulnerability (CVE-2024-0041) is a high-severity flaw that could allow a malicious app to gain elevated privileges on your device.  The problem stems from a coding error related to removing a temporary visual notification (\"persistent dot\").  Because of a timing issue (a \"race condition\"), this error could be exploited to bypass security measures, even without the user needing to do anything.  This means an app already installed on your phone could potentially gain unauthorized access to your system without your knowledge or interaction.  Google has released a patch to fix this in Android versions 14 and 14-next.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-300903792",
+    "severity": "high",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android vulnerability (CVE-2024-0035) allows a malicious app to potentially gain elevated privileges on a device without user interaction.  The problem stems from a coding error in the Android system's code (specifically, `TileLifecycleManager.java`).  This error could allow a background app to unexpectedly start a new activity, essentially giving it more access than it should have.  This is a serious issue because it doesn't require the user to do anything; the attack happens automatically.  The vulnerability has been fixed in later Android versions (11, 12, 12L, 13, 14), and users are urged to update their devices to the latest version for protection.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-304082474",
+    "severity": "high",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android security vulnerability (CVE-2024-0014) is a high-severity flaw in how the system updates its configuration.  A programming error allows attackers to potentially install malicious configuration settings without needing any user interaction or special permissions. This could allow an attacker to gain elevated privileges on the affected device, essentially taking control of it.  The vulnerability affects several Android versions (11, 12, 12L, 13, and 14), but a fix was released on February 1st, 2024.  Users should update their Android devices to the patched versions to protect themselves.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-309426390",
+    "severity": "high",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android vulnerability (CVE-2024-0038) allows a malicious app on your device to inject fake user inputs (like keystrokes or touches) without your knowledge or permission.  This is because a crucial security check was missing in the Android system's accessibility features.  This could let the malicious app take control of your device without needing extra permissions or user interaction, potentially leading to a compromise of your data or device settings.  The vulnerability has been patched in Android version 14.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-297524203",
+    "severity": "critical",
+    "components": "system",
+    "date": "2024-02-01",
+    "summary": "This Android security vulnerability (CVE-2024-0031) is a critical flaw in the Bluetooth software.  A problem with how the system handles input data allows attackers to potentially take complete control of an affected Android device remotely.  No user interaction is required for this attack to succeed, making it extremely dangerous.  The vulnerability has been patched, and users should update their devices to the latest software version to protect themselves.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-298150556",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-02-05",
+    "summary": "This report (CVE-2023-5091) describes a high-severity security vulnerability in Android devices.  The problem existed in the Android system's core (the exact component isn't specified) from the very beginning (\"SoCVersion:0\") and was only fixed on February 5th, 2024 (\"SoCVersion:2024-02-05\").  Because the affected component isn't clearly identified, the exact nature of the vulnerability is unknown, but its severity is considered high, meaning it could allow attackers to compromise your Android device.  To protect yourself, update your Android device to a version released after February 5th, 2024.\n",
+    "modelVersion": "gemini-1.5-flash"
+  },
+  {
+    "cve_id": "ASB-A-301630648",
+    "severity": "high",
+    "components": "vendor",
+    "date": "2024-02-05",
+    "summary": "This report describes a serious security vulnerability (CVE-2023-5249) in Android's system-on-a-chip (SoC).  Essentially,  this means there's a flaw in the core hardware/software of some Android devices that could allow a hacker to gain unauthorized access or control.\n\nThe vulnerability existed from the very beginning of a specific SoC version (SoCVersion:0) and was patched on February 5th, 2024 (SoCVersion:2024-02-05).  Because the affected component is labeled \"unknown,\" the exact nature of the vulnerability remains undisclosed, but its severity is classified as \"High.\"  To protect your Android device, make sure your system is updated to at least February 5th, 2024, or later.\n",
+    "modelVersion": "gemini-1.5-flash"
   }
 ]

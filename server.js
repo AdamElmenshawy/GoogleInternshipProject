@@ -13,7 +13,8 @@ app.use(cors());
 app.use(express.json());
 
 // Define path to the output JSON file
-const outputFilePath = path.join(__dirname, "SumPatches_output.json");
+// const outputFilePath = path.join(__dirname, "SumPatches_output.json");
+const outputFilePath = new URL('./SumPatches_output.json', import.meta.url);
 
 // Fetch vulnerabilities from the saved JSON file and serve it to the frontend
 app.get("/api/vulnerabilities", (req, res) => {
