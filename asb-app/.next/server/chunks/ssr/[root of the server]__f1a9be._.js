@@ -82,6 +82,11 @@ var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$run
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__ = __turbopack_import__("[externals]/react [external] (react, cjs)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2d$chartjs$2d$2__$5b$external$5d$__$28$react$2d$chartjs$2d$2$2c$__esm_import$29$__ = __turbopack_import__("[externals]/react-chartjs-2 [external] (react-chartjs-2, esm_import)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f$chart$2e$js__$5b$external$5d$__$28$chart$2e$js$2c$__esm_import$29$__ = __turbopack_import__("[externals]/chart.js [external] (chart.js, esm_import)");
+(()=>{
+    const e = new Error("Cannot find module '../../../../SumPatches_output.json'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Box$2f$Box$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Box/Box.js [ssr] (ecmascript) <export default as Box>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Typography$2f$Typography$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Typography/Typography.js [ssr] (ecmascript) <export default as Typography>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Grid$2f$Grid$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Grid/Grid.js [ssr] (ecmascript) <export default as Grid>");
@@ -102,11 +107,17 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ;
 ;
 ;
-// import { getDataByMonth } from "../../data/dataProvider"; // Adjust the import based on your data source
+;
 // Register Chart.js components
 __TURBOPACK__imported__module__$5b$externals$5d2f$chart$2e$js__$5b$external$5d$__$28$chart$2e$js$2c$__esm_import$29$__["Chart"].register(__TURBOPACK__imported__module__$5b$externals$5d2f$chart$2e$js__$5b$external$5d$__$28$chart$2e$js$2c$__esm_import$29$__["ArcElement"], __TURBOPACK__imported__module__$5b$externals$5d2f$chart$2e$js__$5b$external$5d$__$28$chart$2e$js$2c$__esm_import$29$__["Tooltip"], __TURBOPACK__imported__module__$5b$externals$5d2f$chart$2e$js__$5b$external$5d$__$28$chart$2e$js$2c$__esm_import$29$__["Legend"]);
 const Dashboard = ({ monthData, monthName })=>{
     const chartRef = __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__["default"].useRef(null);
+    // Calculate severity counts for pie chart
+    const severityCounts = monthData.reduce((acc, item)=>{
+        const severity = item.severity.toLowerCase();
+        acc[severity] = (acc[severity] || 0) + 1;
+        return acc;
+    }, {});
     const chartData = {
         labels: [
             "Critical",
@@ -117,10 +128,10 @@ const Dashboard = ({ monthData, monthName })=>{
         datasets: [
             {
                 data: [
-                    30,
-                    50,
-                    15,
-                    5
+                    severityCounts.critical || 0,
+                    severityCounts.high || 0,
+                    severityCounts.medium || 0,
+                    severityCounts.low || 0
                 ],
                 backgroundColor: [
                     "#FF5733",
@@ -153,7 +164,7 @@ const Dashboard = ({ monthData, monthName })=>{
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/pages/dashboard/[month].js",
-                lineNumber: 46,
+                lineNumber: 56,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Grid$2f$Grid$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
@@ -176,38 +187,12 @@ const Dashboard = ({ monthData, monthName })=>{
                                                         children: "CVE"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 55,
+                                                        lineNumber: 65,
                                                         columnNumber: 30
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/pages/dashboard/[month].js",
-                                                    lineNumber: 55,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
-                                                        children: "References"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 56,
-                                                        columnNumber: 30
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/pages/dashboard/[month].js",
-                                                    lineNumber: 56,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
-                                                        children: "Type"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 57,
-                                                        columnNumber: 30
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/pages/dashboard/[month].js",
-                                                    lineNumber: 57,
+                                                    lineNumber: 65,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -215,101 +200,127 @@ const Dashboard = ({ monthData, monthName })=>{
                                                         children: "Severity"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 58,
+                                                        lineNumber: 66,
                                                         columnNumber: 30
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/pages/dashboard/[month].js",
-                                                    lineNumber: 58,
+                                                    lineNumber: 66,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
-                                                        children: "Updated AOSP Versions"
+                                                        children: "Components"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 59,
+                                                        lineNumber: 67,
                                                         columnNumber: 30
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/pages/dashboard/[month].js",
-                                                    lineNumber: 59,
+                                                    lineNumber: 67,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
+                                                        children: "Date"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/pages/dashboard/[month].js",
+                                                        lineNumber: 68,
+                                                        columnNumber: 30
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/pages/dashboard/[month].js",
+                                                    lineNumber: 68,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("strong", {
+                                                        children: "Summary"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/pages/dashboard/[month].js",
+                                                        lineNumber: 69,
+                                                        columnNumber: 30
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/pages/dashboard/[month].js",
+                                                    lineNumber: 69,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/pages/dashboard/[month].js",
-                                            lineNumber: 54,
+                                            lineNumber: 64,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/pages/dashboard/[month].js",
-                                        lineNumber: 53,
+                                        lineNumber: 63,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableBody$2f$TableBody$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableBody$3e$__["TableBody"], {
                                         children: monthData.map((row)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableRow$2f$TableRow$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableRow$3e$__["TableRow"], {
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
-                                                        children: row.cve
+                                                        children: row.cve_id
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 65,
-                                                        columnNumber: 21
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
-                                                        children: row.references
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 66,
-                                                        columnNumber: 21
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
-                                                        children: row.type
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 67,
+                                                        lineNumber: 75,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                                         children: row.severity
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 68,
+                                                        lineNumber: 76,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
-                                                        children: row.versions || row.subcomponent
+                                                        children: row.components
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/pages/dashboard/[month].js",
-                                                        lineNumber: 69,
+                                                        lineNumber: 77,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
+                                                        children: row.date
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/pages/dashboard/[month].js",
+                                                        lineNumber: 78,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TableCell$2f$TableCell$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
+                                                        children: row.summary
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/pages/dashboard/[month].js",
+                                                        lineNumber: 79,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
-                                            }, row.cve, true, {
+                                            }, row.cve_id, true, {
                                                 fileName: "[project]/src/pages/dashboard/[month].js",
-                                                lineNumber: 64,
+                                                lineNumber: 74,
                                                 columnNumber: 19
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/pages/dashboard/[month].js",
-                                        lineNumber: 62,
+                                        lineNumber: 72,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/pages/dashboard/[month].js",
-                                lineNumber: 52,
+                                lineNumber: 62,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/pages/dashboard/[month].js",
-                            lineNumber: 51,
+                            lineNumber: 61,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/pages/dashboard/[month].js",
-                        lineNumber: 50,
+                        lineNumber: 60,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Grid$2f$Grid$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
@@ -328,28 +339,28 @@ const Dashboard = ({ monthData, monthName })=>{
                                     options: chartOptions
                                 }, void 0, false, {
                                     fileName: "[project]/src/pages/dashboard/[month].js",
-                                    lineNumber: 79,
+                                    lineNumber: 89,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/pages/dashboard/[month].js",
-                                lineNumber: 78,
+                                lineNumber: 88,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/pages/dashboard/[month].js",
-                            lineNumber: 77,
+                            lineNumber: 87,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/pages/dashboard/[month].js",
-                        lineNumber: 76,
+                        lineNumber: 86,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/pages/dashboard/[month].js",
-                lineNumber: 49,
+                lineNumber: 59,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Box$2f$Box$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -362,27 +373,38 @@ const Dashboard = ({ monthData, monthName })=>{
                         children: "AI Overview"
                     }, void 0, false, {
                         fileName: "[project]/src/pages/dashboard/[month].js",
-                        lineNumber: 85,
+                        lineNumber: 95,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Typography$2f$Typography$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
                         variant: "body1",
-                        children: "This section provides an overview of the AI analysis and insights. You can add more detailed information here based on your specific requirements."
-                    }, void 0, false, {
+                        children: [
+                            "This section provides an overview of the AI analysis and insights. Total vulnerabilities this month: ",
+                            monthData.length,
+                            "Critical: ",
+                            severityCounts.critical || 0,
+                            "High: ",
+                            severityCounts.high || 0,
+                            "Medium: ",
+                            severityCounts.medium || 0,
+                            "Low: ",
+                            severityCounts.low || 0
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/pages/dashboard/[month].js",
-                        lineNumber: 88,
+                        lineNumber: 98,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/pages/dashboard/[month].js",
-                lineNumber: 84,
+                lineNumber: 94,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/pages/dashboard/[month].js",
-        lineNumber: 45,
+        lineNumber: 55,
         columnNumber: 5
     }, this);
 };
@@ -412,30 +434,12 @@ async function getStaticPaths() {
     };
 }
 async function getStaticProps({ params }) {
-    const monthData = [
-        {
-            cve: "CVE-2024-43762",
-            references: "A-340239088",
-            type: "EoP",
-            severity: "High",
-            versions: "12, 12L, 13, 14, 15"
-        },
-        {
-            cve: "CVE-2024-43764",
-            references: "A-317048495",
-            type: "EoP",
-            severity: "High",
-            versions: "13, 14"
-        },
-        {
-            cve: "CVE-2024-43769",
-            references: "A-360807442",
-            type: "EoP",
-            severity: "High",
-            versions: "13, 14, 15"
-        }
-    ];
-    //   getDataByMonth(params.month); // Fetch data based on the month
+    // Filter data based on the month
+    const monthData = data.filter((item)=>{
+        const itemDate = new Date(item.date);
+        const [year, month] = params.month.split('-');
+        return itemDate.getFullYear() === parseInt(year) && itemDate.getMonth() + 1 === parseInt(month);
+    });
     const monthName = new Date(params.month + "-01").toLocaleString('default', {
         month: 'long',
         year: 'numeric'

@@ -13,7 +13,8 @@ import {
 } from "@mui/material";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-// import { getDataByMonth } from "../../data/dataProvider"; // Adjust the import based on your data source
+// Update this import path
+import data from "../../data/SumPatches_output.json";
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -21,14 +22,24 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const Dashboard = ({ monthData, monthName }) => {
   const chartRef = React.useRef(null);
 
+  // Calculate severity counts for pie chart
+  const severityCounts = monthData.reduce((acc, item) => {
+    const severity = item.severity.toLowerCase();
+    acc[severity] = (acc[severity] || 0) + 1;
+    return acc;
+  }, {});
+
   const chartData = {
     labels: ["Critical", "High", "Medium", "Low"],
-    datasets: [
-      {
-        data: [30, 50, 15, 5], // Example data, replace with actual data
-        backgroundColor: ["#FF5733", "#FF8C00", "#FFEB3B", "#4CAF50"],
-      },
-    ],
+    datasets: [{
+      data: [
+        severityCounts.critical || 0,
+        severityCounts.high || 0,
+        severityCounts.medium || 0,
+        severityCounts.low || 0
+      ],
+      backgroundColor: ["#FF5733", "#FF8C00", "#FFEB3B", "#4CAF50"],
+    }],
   };
 
   const chartOptions = {
@@ -53,20 +64,20 @@ const Dashboard = ({ monthData, monthName }) => {
               <TableHead>
                 <TableRow>
                   <TableCell><strong>CVE</strong></TableCell>
-                  <TableCell><strong>References</strong></TableCell>
-                  <TableCell><strong>Type</strong></TableCell>
                   <TableCell><strong>Severity</strong></TableCell>
-                  <TableCell><strong>Updated AOSP Versions</strong></TableCell>
+                  <TableCell><strong>Components</strong></TableCell>
+                  <TableCell><strong>Date</strong></TableCell>
+                  <TableCell><strong>Summary</strong></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {monthData.map((row) => (
-                  <TableRow key={row.cve}>
-                    <TableCell>{row.cve}</TableCell>
-                    <TableCell>{row.references}</TableCell>
-                    <TableCell>{row.type}</TableCell>
+                  <TableRow key={row.cve_id}>
+                    <TableCell>{row.cve_id}</TableCell>
                     <TableCell>{row.severity}</TableCell>
-                    <TableCell>{row.versions || row.subcomponent}</TableCell>
+                    <TableCell>{row.components}</TableCell>
+                    <TableCell>{row.date}</TableCell>
+                    <TableCell>{row.summary}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -87,7 +98,11 @@ const Dashboard = ({ monthData, monthName }) => {
         </Typography>
         <Typography variant="body1">
           This section provides an overview of the AI analysis and insights.
-          You can add more detailed information here based on your specific requirements.
+          Total vulnerabilities this month: {monthData.length}
+          Critical: {severityCounts.critical || 0}
+          High: {severityCounts.high || 0}
+          Medium: {severityCounts.medium || 0}
+          Low: {severityCounts.low || 0}
         </Typography>
       </Box>
     </Box>
@@ -95,7 +110,8 @@ const Dashboard = ({ monthData, monthName }) => {
 };
 
 export async function getStaticPaths() {
-  const months = ["2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"];
+  const months = ["2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", 
+                 "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"];
   const paths = months.map((month) => ({
     params: { month },
   }));
@@ -104,30 +120,14 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const monthData = [
-    {
-      cve: "CVE-2024-43762",
-      references: "A-340239088",
-      type: "EoP",
-      severity: "High",
-      versions: "12, 12L, 13, 14, 15",
-    },
-    {
-      cve: "CVE-2024-43764",
-      references: "A-317048495",
-      type: "EoP",
-      severity: "High",
-      versions: "13, 14",
-    },
-    {
-      cve: "CVE-2024-43769",
-      references: "A-360807442",
-      type: "EoP",
-      severity: "High",
-      versions: "13, 14, 15",
-    },
-  ]; 
-//   getDataByMonth(params.month); // Fetch data based on the month
+  // Filter data based on the month
+  const monthData = data.filter(item => {
+    const itemDate = new Date(item.date);
+    const [year, month] = params.month.split('-');
+    return itemDate.getFullYear() === parseInt(year) && 
+           (itemDate.getMonth() + 1) === parseInt(month);
+  });
+
   const monthName = new Date(params.month + "-01").toLocaleString('default', { month: 'long', year: 'numeric' });
 
   return { props: { monthData, monthName } };

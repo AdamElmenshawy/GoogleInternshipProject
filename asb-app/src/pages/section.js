@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { getDataBySection } from "../data/dataProvider"; // Adjust the import based on your data source
+import { getDataBySection } from "src/data/dataProvider.js"; // Adjust the import based on your data source
 
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
