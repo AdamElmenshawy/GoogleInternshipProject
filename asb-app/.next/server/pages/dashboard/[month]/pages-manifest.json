@@ -1,0 +1,3 @@
+{
+  "/dashboard/[month]": "pages/dashboard/[month].js"
+}
