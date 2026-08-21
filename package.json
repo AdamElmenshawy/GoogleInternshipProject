@@ -1,13 +1,24 @@
 {
   "name": "googleinternshipproject",
   "version": "1.0.0",
-  "description": "",
-  "main": "scraper.js",
+  "description": "Android Fuzzing, Crash Diagnosis & Security Bulletin Classifier Platform",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "test": "node fuzzer/android_fuzzer.js",
+    "dev": "nodemon server.js",
+    "fuzz": "node fuzzer/android_fuzzer.js",
+    "pipeline": "node fuzzer/pipeline.js",
+    "scrape:asb": "node SumPatches.js",
+    "frontend": "cd asb-app && npm run dev"
   },
-  "keywords": [],
+  "keywords": [
+    "android",
+    "fuzzing",
+    "security-bulletin",
+    "gemini",
+    "llm",
+    "cve"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

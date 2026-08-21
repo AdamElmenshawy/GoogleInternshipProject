@@ -9,12 +9,13 @@ dotenv.config();
 const OSV_API_URL = "https://api.osv.dev/v1/vulns/";
 const geminiApiKey = process.env.GEMINI_API_KEY;
 
-if (!geminiApiKey) {
-    throw new Error("Gemini API Key is missing. Please set GEMINI_API_KEY in your environment.");
-}
+let genAI = null;
+let model = null;
 
-const genAI = new GoogleGenerativeAI(geminiApiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+if (geminiApiKey) {
+    genAI = new GoogleGenerativeAI(geminiApiKey);
+    model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+}
 
 export async function fetchJsonData(url) {
     try {
@@ -39,6 +40,7 @@ export function extractVulnerabilities(data) {
                     severity: vuln.severity || "Unknown severity",
                     components: vuln.components ? vuln.components.join(", ") : "No components available",
                     date,
+                    source: "asb"
                 });
             });
         });
@@ -61,6 +63,15 @@ function sleep(ms) {
 }
 
 export async function processWithGemini(osvDetails) {
+    if (!model) {
+        if (!process.env.GEMINI_API_KEY) {
+            console.warn("GEMINI_API_KEY is not set. Using fallback technical summary.");
+            return osvDetails.details || osvDetails.summary || "Security vulnerability reported in Android Security Bulletin.";
+        }
+        genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+        model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    }
+
     try {
         const prompt = `Analyze and summarize this security vulnerability in clear, non-technical terms:\n\n${JSON.stringify(osvDetails, null, 2)}`;
         const result = await model.generateContent(prompt);
@@ -68,9 +79,7 @@ export async function processWithGemini(osvDetails) {
         console.log("Gemini API Response:", JSON.stringify(result, null, 2));
 
         const summary = result.response ? result.response.text() : "No summary returned";
-
         console.log("Generated Summary:", summary);
-
         return summary;
     } catch (error) {
         console.error("Error processing data with Gemini AI:", error.message);
@@ -88,7 +97,7 @@ function readExistingVulnerabilities(filename) {
             return new Set();
         }
         const vulnerabilities = JSON.parse(data);
-        return new Set(vulnerabilities.map((vuln) => vuln.cve_id));
+        return new Set(vulnerabilities.map((vuln) => vuln.cve_id || vuln.crash_id));
     } catch (error) {
         console.error("Error reading existing vulnerabilities:", error);
         return new Set();
@@ -141,6 +150,7 @@ export async function processVulnerabilities(data, filename) {
 
         const result = {
             cve_id: vuln.cve_id,
+            source: "asb",
             severity: vuln.severity,
             components: vuln.components,
             date: vuln.date,
@@ -153,13 +163,27 @@ export async function processVulnerabilities(data, filename) {
 
         requestCount++;
 
-        if (requestCount > 1 && requestCount % 15 == 0) {
+        if (requestCount > 1 && requestCount % 15 === 0) {
             console.log("15 requests made. Sleeping for 1 minute...");
             await sleep(61000);
         }
     }
 
     console.log("Processing complete. Data saved to:", filename);
+}
+
+/**
+ * Returns structured labeled dataset for use as reference examples by the classifier.
+ */
+export function getReferenceDataset(filename = "SumPatches_output.json") {
+    const filePath = path.resolve(filename);
+    if (!fs.existsSync(filePath)) return [];
+    try {
+        const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+        return data.filter(item => item.source !== "fuzzer" && item.summary && item.severity);
+    } catch {
+        return [];
+    }
 }
 
 async function main() {
@@ -179,4 +203,6 @@ async function main() {
     }
 }
 
-main();
+if (process.argv[1] && process.argv[1].endsWith("SumPatches.js")) {
+    main();
+}
