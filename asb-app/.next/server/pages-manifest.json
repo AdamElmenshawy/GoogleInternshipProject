@@ -1,1 +1,1 @@
-{"/_app":"pages/_app.js","/_error":"pages/_error.js","/":"pages/index.html","/section/[section]":"pages/section/[section].js","/dashboard/[month]":"pages/dashboard/[month].js","/_document":"pages/_document.js","/404":"pages/404.html"}
+{"/_app":"pages/_app.js","/_error":"pages/_error.js","/":"pages/index.html","/dashboard/[month]":"pages/dashboard/[month].js","/section/[section]":"pages/section/[section].js","/_document":"pages/_document.js","/404":"pages/404.html"}

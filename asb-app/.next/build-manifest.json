@@ -5,8 +5,8 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/4ROLW2f8y0_GJj7diVSeZ/_buildManifest.js",
-    "static/4ROLW2f8y0_GJj7diVSeZ/_ssgManifest.js"
+    "static/BOyEQiM7LmU-zPrP-8MVq/_buildManifest.js",
+    "static/BOyEQiM7LmU-zPrP-8MVq/_ssgManifest.js"
   ],
   "rootMainFiles": [
     "static/chunks/webpack-2f7b9ded6775055f.js",
@@ -21,7 +21,7 @@
       "static/chunks/main-0dbecbfd877b2a7d.js",
       "static/chunks/276-7db31f2d41fec37e.js",
       "static/chunks/572-6d475b7dca11b16f.js",
-      "static/chunks/pages/index-b8b5374b4818cb32.js"
+      "static/chunks/pages/index-5e4c6ac4f1c840ea.js"
     ],
     "/_app": [
       "static/chunks/webpack-2f7b9ded6775055f.js",
@@ -43,7 +43,7 @@
       "static/chunks/276-7db31f2d41fec37e.js",
       "static/chunks/876-530bcaae9fe0a724.js",
       "static/chunks/154-7b2d0a780b437c71.js",
-      "static/chunks/pages/dashboard/[month]-1d26239898d4edff.js"
+      "static/chunks/pages/dashboard/[month]-f22b261cd075af12.js"
     ],
     "/section/[section]": [
       "static/chunks/webpack-2f7b9ded6775055f.js",

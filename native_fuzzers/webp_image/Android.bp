@@ -1,0 +1,36 @@
+cc_fuzz {
+    name: "webp_parser_fuzzer",
+    host_supported: true,
+    device_supported: true,
+
+    srcs: [
+        "webp_parser_fuzzer.cpp",
+    ],
+
+    static_libs: [
+        "libwebp-decode",
+        "libwebp-encode",
+    ],
+
+    shared_libs: [
+        "liblog",
+        "libutils",
+    ],
+
+    dictionary: "webp.dict",
+
+    fuzz_config: {
+        cc: [
+            "android-security@google.com",
+        ],
+        componentid: 25690,
+        description: "Fuzzer targeting WebP RIFF VP8/VP8L lossless chunk parsing",
+        vector: "remote",
+        service_privilege: "unprivileged",
+    },
+
+    sanitize: {
+        hwaddress: true,
+        address: true,
+    },
+}

@@ -32,7 +32,6 @@ export class GeminiCrashClassifier {
 
     try {
       const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-      // Extract a diverse representative set of labeled ASB CVEs
       const labeledSamples = {
         kernel: data.filter(d => d.components?.toLowerCase().includes("kernel")).slice(0, 3),
         vendor: data.filter(d => d.components?.toLowerCase().includes("vendor")).slice(0, 3),
@@ -77,11 +76,13 @@ ${referenceText}
 
 ### NEW FUZZER CRASH TO ANALYZE:
 Process: ${crashReport.process}
+Sanitizer / Fault Type: ${crashReport.sanitizer || crashReport.signal}
 Signal & Code: ${crashReport.signal}
 Fault Address: ${crashReport.fault_address}
 Cause: ${crashReport.cause}
 Backtrace:
 ${crashReport.backtrace}
+${crashReport.reproducer_hex ? `Reproducer Hex: ${crashReport.reproducer_hex}` : ""}
 
 ### OUTPUT FORMAT (Must be valid JSON only, no markdown formatting around JSON):
 {
@@ -103,9 +104,10 @@ ${crashReport.backtrace}
     let severity = "high";
     let type = "DoS";
 
-    const log = (crashReport.raw_log || "").toLowerCase();
+    const log = (crashReport.raw_log || crashReport.rawReport || "").toLowerCase();
     const cause = (crashReport.cause || "").toLowerCase();
     const process = (crashReport.process || "").toLowerCase();
+    const sanitizer = (crashReport.sanitizer || "").toLowerCase();
 
     if (process.includes("netd") || process.includes("kernel") || log.includes("libc.so (abort")) {
       components = "Kernel / Network Daemon";
@@ -115,11 +117,15 @@ ${crashReport.backtrace}
       components = "Vendor / Qualcomm";
       type = "EoP";
       severity = "critical";
-    } else if (process.includes("media") || process.includes("codec") || cause.includes("out of bounds") || cause.includes("heap buffer overflow")) {
+    } else if (process.includes("media") || process.includes("codec") || process.includes("hevc") || cause.includes("out of bounds") || cause.includes("heap buffer overflow") || sanitizer.includes("hwasan")) {
       components = "Media / Codec";
       type = "Memory Corruption";
       severity = "high";
-    } else if (process.includes("system_server") || log.includes("libandroid_servers.so")) {
+    } else if (process.includes("webp")) {
+      components = "Framework / Graphics";
+      type = "Memory Corruption";
+      severity = "critical";
+    } else if (process.includes("system_server") || process.includes("surfaceflinger") || log.includes("libandroid_servers.so")) {
       components = "Framework / System Server";
       type = "EoP";
       severity = "high";
@@ -157,7 +163,6 @@ ${crashReport.backtrace}
       const result = await this.model.generateContent(prompt);
       const text = result.response ? result.response.text() : "";
 
-      // Extract JSON from response
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
@@ -184,14 +189,16 @@ ${crashReport.backtrace}
       components: analysis.components || "Framework",
       severity: (analysis.severity || "high").toLowerCase(),
       type: analysis.type || "Memory Corruption",
-      date: crashReport.date,
+      date: crashReport.date || new Date().toISOString().split("T")[0],
       summary: analysis.summary,
       technical_analysis: analysis.technical_breakdown,
       classification_reasoning: analysis.classification_reasoning,
       stack_trace: crashReport.backtrace,
       fault_signal: `${crashReport.signal} - ${crashReport.cause}`,
       fault_address: crashReport.fault_address,
-      target_build: crashReport.target_build,
+      target_build: crashReport.target_build || "Android 15 (VanillaIceCream - API 35)",
+      sanitizer: crashReport.sanitizer || "HWASan",
+      reproducer_hex: crashReport.reproducerHex || null,
       modelVersion
     };
   }

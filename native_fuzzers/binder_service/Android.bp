@@ -1,0 +1,37 @@
+cc_fuzz {
+    name: "surface_flinger_fuzzer",
+    host_supported: false,
+    device_supported: true,
+
+    srcs: [
+        "surface_flinger_fuzzer.cpp",
+    ],
+
+    static_libs: [
+        "libsurfaceflinger",
+        "libgui",
+    ],
+
+    shared_libs: [
+        "libbinder",
+        "libutils",
+        "libcutils",
+        "liblog",
+        "libui",
+    ],
+
+    fuzz_config: {
+        cc: [
+            "android-security@google.com",
+        ],
+        componentid: 1075131, // Framework Window / SurfaceFlinger
+        description: "Fuzzes SurfaceFlinger Binder endpoints via AOSP fuzzService framework",
+        vector: "local_privileged",
+        service_privilege: "system",
+    },
+
+    sanitize: {
+        hwaddress: true,
+        address: true,
+    },
+}

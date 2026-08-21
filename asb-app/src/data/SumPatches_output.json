@@ -1,5 +1,62 @@
 [
   {
+    "cve_id": "CRASH-2024-EFA88430",
+    "crash_id": "CRASH-2024-EFA88430",
+    "source": "fuzzer",
+    "process": "/system/bin/surfaceflinger",
+    "components": "Media / Codec",
+    "severity": "high",
+    "type": "Memory Corruption",
+    "date": "2026-08-21",
+    "summary": "This fuzzer-discovered issue in Media / Codec (/system/bin/surfaceflinger) causes a SIGSEGV (SEGV_TAGCHECK) crash due to HWAddressSanitizer tag mismatch handling malformed Parcel in transact code 1004. In modern Android builds, an attacker or malformed input could trigger unexpected memory behavior leading to Memory Corruption. Root cause analysis indicates improper state or memory boundary verification during transaction processing.",
+    "technical_analysis": "Fault at address undefined during HWAddressSanitizer tag mismatch handling malformed Parcel in transact code 1004. The call stack indicates memory corruption or illegal access in       #00 pc 0000000000045844  /system/lib64/libsurfaceflinger.so (android::SurfaceFlinger::onTransact+412).",
+    "classification_reasoning": "Classified as Media / Codec / high based on matching ASB severity models for Memory Corruption in process /system/bin/surfaceflinger.",
+    "stack_trace": "      #00 pc 0000000000045844  /system/lib64/libsurfaceflinger.so (android::SurfaceFlinger::onTransact+412)\n      #01 pc 00000000000cf550  /system/lib64/libbinder.so (android::BBinder::transact+272)\n      #02 pc 000000000003b12f  /system/lib64/libbinder.so (android::IPCThreadState::executeCommand+520)",
+    "fault_signal": "SIGSEGV (SEGV_TAGCHECK) - HWAddressSanitizer tag mismatch handling malformed Parcel in transact code 1004",
+    "target_build": "Android 15 (VanillaIceCream - API 35)",
+    "sanitizer": "HWASan (tag-mismatch in IBinder transact)",
+    "reproducer_hex": "ffffffff7fffffff000003ec",
+    "modelVersion": "heuristic-analyzer"
+  },
+  {
+    "cve_id": "CRASH-2024-6A804813",
+    "crash_id": "CRASH-2024-6A804813",
+    "source": "fuzzer",
+    "process": "/system/lib64/libwebp.so",
+    "components": "Media / Codec",
+    "severity": "high",
+    "type": "Memory Corruption",
+    "date": "2026-08-21",
+    "summary": "This fuzzer-discovered issue in Media / Codec (/system/lib64/libwebp.so) causes a SIGSEGV (SEGV_ACCERR) crash due to Heap buffer overflow in VP8L lossless Huffman table construction. In modern Android builds, an attacker or malformed input could trigger unexpected memory behavior leading to Memory Corruption. Root cause analysis indicates improper state or memory boundary verification during transaction processing.",
+    "technical_analysis": "Fault at address undefined during Heap buffer overflow in VP8L lossless Huffman table construction. The call stack indicates memory corruption or illegal access in       #00 pc 000000000008e912  /system/lib64/libwebp.so (BuildHuffmanTable+312).",
+    "classification_reasoning": "Classified as Media / Codec / high based on matching ASB severity models for Memory Corruption in process /system/lib64/libwebp.so.",
+    "stack_trace": "      #00 pc 000000000008e912  /system/lib64/libwebp.so (BuildHuffmanTable+312)\n      #01 pc 000000000008f102  /system/lib64/libwebp.so (ReadHuffmanCodes+540)\n      #02 pc 000000000008a430  /system/lib64/libwebp.so (VP8LDecodeHeader+78)\n      #03 pc 0000000000084110  /system/lib64/libwebp.so (WebPDecode+120)",
+    "fault_signal": "SIGSEGV (SEGV_ACCERR) - Heap buffer overflow in VP8L lossless Huffman table construction",
+    "target_build": "Android 15 (VanillaIceCream - API 35)",
+    "sanitizer": "ASan (heap-buffer-overflow)",
+    "reproducer_hex": "5249464620000000574542505650384c100000002f0120ffff",
+    "modelVersion": "heuristic-analyzer"
+  },
+  {
+    "cve_id": "CRASH-2024-8EECBB65",
+    "crash_id": "CRASH-2024-8EECBB65",
+    "source": "fuzzer",
+    "process": "/apex/com.android.media.swcodec/lib64/libstagefright_soft_c2hevcdec.so",
+    "components": "Media / Codec",
+    "severity": "high",
+    "type": "Memory Corruption",
+    "date": "2026-08-21",
+    "summary": "This fuzzer-discovered issue in Media / Codec (/apex/com.android.media.swcodec/lib64/libstagefright_soft_c2hevcdec.so) causes a SIGSEGV (SEGV_TAGCHECK) crash due to Heap out-of-bounds read/write tag-mismatch in HEVC slice parser. In modern Android builds, an attacker or malformed input could trigger unexpected memory behavior leading to Memory Corruption. Root cause analysis indicates improper state or memory boundary verification during transaction processing.",
+    "technical_analysis": "Fault at address undefined during Heap out-of-bounds read/write tag-mismatch in HEVC slice parser. The call stack indicates memory corruption or illegal access in       #00 pc 00000000000a474c  /apex/com.android.media.swcodec/lib64/libstagefright_soft_c2hevcdec.so (ihevcd_parse_slice_header+620).",
+    "classification_reasoning": "Classified as Media / Codec / high based on matching ASB severity models for Memory Corruption in process /apex/com.android.media.swcodec/lib64/libstagefright_soft_c2hevcdec.so.",
+    "stack_trace": "      #00 pc 00000000000a474c  /apex/com.android.media.swcodec/lib64/libstagefright_soft_c2hevcdec.so (ihevcd_parse_slice_header+620)\n      #01 pc 000000000009ec30  /apex/com.android.media.swcodec/lib64/libstagefright_soft_c2hevcdec.so (ihevcd_decode+1480)\n      #02 pc 0000000000085110  /apex/com.android.media.swcodec/lib64/libcodec2_soft_common.so (C2SoftHevcDec::process+410)\n      #03 pc 000000000003b870  /apex/com.android.media/lib64/libcodec2_client.so (android::Codec2Client::Component::queue+180)",
+    "fault_signal": "SIGSEGV (SEGV_TAGCHECK) - Heap out-of-bounds read/write tag-mismatch in HEVC slice parser",
+    "target_build": "Android 15 (VanillaIceCream - API 35)",
+    "sanitizer": "HWASan (tag-mismatch / heap-buffer-overflow)",
+    "reproducer_hex": "0000000140010c01ffff016000000300fffe009a",
+    "modelVersion": "heuristic-analyzer"
+  },
+  {
     "cve_id": "CRASH-2024-04B2C372",
     "crash_id": "CRASH-2024-04B2C372",
     "source": "fuzzer",
@@ -33,7 +90,9 @@
     "fault_signal": "SIGABRT - Abort message: 'FORTIFY: %n not allowed in netlink format string handler'",
     "fault_address": "0x000000000000037c",
     "target_build": "Android 15 (VanillaIceCream - API 35)",
-    "modelVersion": "heuristic-analyzer"
+    "modelVersion": "heuristic-analyzer",
+    "sanitizer": "HWASan",
+    "reproducer_hex": null
   },
   {
     "cve_id": "CRASH-2024-D50859D3",
@@ -51,7 +110,9 @@
     "fault_signal": "SIGSEGV (SEGV_ACCERR) - heap buffer overflow (out of bounds write) during HEVC slice header parsing with malformed NAL unit length",
     "fault_address": "0x0000007412984000",
     "target_build": "Android 15 (VanillaIceCream - API 35)",
-    "modelVersion": "heuristic-analyzer"
+    "modelVersion": "heuristic-analyzer",
+    "sanitizer": "HWASan",
+    "reproducer_hex": null
   },
   {
     "cve_id": "CRASH-2024-C08E37C9",
@@ -69,7 +130,9 @@
     "fault_signal": "SIGSEGV (SEGV_MAPERR) - null pointer dereference while handling DisplayContent#applyRotationLocked during rapid display reconfiguration fuzzing",
     "fault_address": "0x0000000000000018",
     "target_build": "Android 15 (VanillaIceCream - API 35)",
-    "modelVersion": "heuristic-analyzer"
+    "modelVersion": "heuristic-analyzer",
+    "sanitizer": "HWASan",
+    "reproducer_hex": null
   },
   {
     "cve_id": "ASB-A-135368228",

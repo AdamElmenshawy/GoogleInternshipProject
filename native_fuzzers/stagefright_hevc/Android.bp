@@ -1,0 +1,51 @@
+/**
+ * AOSP Build Blueprint for Stagefright HEVC Parser Fuzzer
+ */
+cc_fuzz {
+    name: "hevc_parser_fuzzer",
+    host_supported: true,
+    device_supported: true,
+
+    srcs: [
+        "hevc_parser_fuzzer.cpp",
+    ],
+
+    static_libs: [
+        "libstagefright_soft_c2hevcdec",
+        "libstagefright_foundation",
+        "libcodec2_soft_common",
+    ],
+
+    shared_libs: [
+        "liblog",
+        "libutils",
+        "libcutils",
+    ],
+
+    corpus: [
+        "corpus/*",
+    ],
+
+    dictionary: "hevc.dict",
+
+    fuzz_config: {
+        cc: [
+            "android-security@google.com",
+        ],
+        componentid: 25690, // AOSP Media Framework
+        hotlists: [
+            "4593311",
+        ],
+        description: "Fuzzer targeting HEVC bitstream NAL decoding in libstagefright",
+        vector: "remote",
+        service_privilege: "constrained",
+        users: "multi_user",
+        fuzzed: "2024-02",
+    },
+
+    sanitize: {
+        hwaddress: true,
+        address: true,
+        integer_overflow: true,
+    },
+}

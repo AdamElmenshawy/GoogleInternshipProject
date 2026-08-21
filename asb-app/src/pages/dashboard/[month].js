@@ -245,9 +245,17 @@ const Dashboard = ({ initialMonthData, monthName, monthId }) => {
                 <Typography variant="subtitle2">{selectedIssue.type || "Vulnerability"}</Typography>
               </Grid>
               {selectedIssue.target_build && (
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                   <Typography variant="caption" color="text.secondary">Target Android Build</Typography>
                   <Typography variant="subtitle2">{selectedIssue.target_build}</Typography>
+                </Grid>
+              )}
+              {selectedIssue.sanitizer && (
+                <Grid item xs={6}>
+                  <Typography variant="caption" color="text.secondary">Sanitizer Memory Check</Typography>
+                  <Typography variant="subtitle2" sx={{ color: "#d32f2f", fontWeight: "bold" }}>
+                    {selectedIssue.sanitizer}
+                  </Typography>
                 </Grid>
               )}
             </Grid>
@@ -269,6 +277,29 @@ const Dashboard = ({ initialMonthData, monthName, monthId }) => {
                 <Typography variant="body2" paragraph sx={{ bgcolor: "#f3e5f5", p: 2, borderRadius: 1 }}>
                   {selectedIssue.classification_reasoning}
                 </Typography>
+              </>
+            )}
+
+            {selectedIssue.reproducer_hex && (
+              <>
+                <Typography variant="subtitle1" fontWeight="bold" color="warning.main" gutterBottom>
+                  🧪 Reproducer Hex Payload
+                </Typography>
+                <Box 
+                  component="pre" 
+                  sx={{ 
+                    bgcolor: "#2d2d2d", 
+                    color: "#ffb74d", 
+                    p: 1.5, 
+                    borderRadius: 1, 
+                    overflowX: "auto", 
+                    fontSize: "0.8rem",
+                    fontFamily: "monospace",
+                    mb: 2
+                  }}
+                >
+                  {selectedIssue.reproducer_hex}
+                </Box>
               </>
             )}
 

@@ -1,0 +1,15 @@
+# WebP RIFF Container & Chunk Tokens
+riff_header="RIFF"
+webp_header="WEBP"
+chunk_vp8="VP8 "
+chunk_vp8l="VP8L"
+chunk_vp8x="VP8X"
+chunk_anim="ANIM"
+chunk_anmf="ANMF"
+chunk_alph="ALPH"
+chunk_iccp="ICCP"
+chunk_exif="EXIF"
+chunk_xmp="XMP "
+
+# VP8L Lossless Signatures
+vp8l_sig="\x2F"
