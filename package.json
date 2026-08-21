@@ -4,11 +4,14 @@
   "description": "Android Fuzzing, Crash Diagnosis & Security Bulletin Classifier Platform",
   "main": "server.js",
   "scripts": {
-    "test": "node fuzzer/android_fuzzer.js",
+    "test": "node --test test/pipeline.test.js",
     "dev": "nodemon server.js",
     "fuzz": "node fuzzer/android_fuzzer.js",
+    "fuzz:dry-run": "node fuzzer/android_fuzzer.js --dry-run",
     "pipeline": "node fuzzer/pipeline.js",
+    "pipeline:dry-run": "node fuzzer/pipeline.js --dry-run",
     "scrape:asb": "node SumPatches.js",
+    "repair:summaries": "node scripts/repair_failed_summaries.js",
     "frontend": "cd asb-app && npm run dev"
   },
   "keywords": [
@@ -22,6 +25,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/genai": "^2.18.0",
     "@google/generative-ai": "^0.21.0",
     "axios": "^1.7.9",
     "cheerio": "^1.0.0",

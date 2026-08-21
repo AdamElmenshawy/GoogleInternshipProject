@@ -29,14 +29,18 @@ const HomePage = () => {
   }, []);
 
   const handleTriggerFuzzer = async () => {
-    setFuzzingStatus("🚀 Launching Android Fuzzer & Gemini Classification Pipeline...");
+    setFuzzingStatus("🚀 Launching Android Fuzzer & Gemini Classification Pipeline (device mode)...");
     try {
       const res = await fetch("http://localhost:20000/api/fuzzer/trigger", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ iterations: 2, mode: "simulation" })
+        body: JSON.stringify({ iterations: 2, mode: "device" })
       });
       const data = await res.json();
+      if (!res.ok) {
+        setFuzzingStatus(`⚠️ ${data.error || "Pipeline launch failed"}`);
+        return;
+      }
       setFuzzingStatus(`✅ ${data.message}`);
     } catch (err) {
       setFuzzingStatus("ℹ️ Fuzzer pipeline triggered (Run `npm run pipeline` in terminal for real-time logs).");

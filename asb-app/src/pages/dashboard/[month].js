@@ -142,12 +142,20 @@ const Dashboard = ({ initialMonthData, monthName, monthId }) => {
                     return (
                       <TableRow key={row.cve_id || row.crash_id} hover>
                         <TableCell>
-                          <Chip 
-                            label={isFuzzer ? "FUZZER" : "ASB"} 
-                            color={isFuzzer ? "secondary" : "primary"} 
-                            size="small" 
-                            variant="outlined" 
+                          <Chip
+                            label={isFuzzer ? "FUZZER" : "ASB"}
+                            color={isFuzzer ? "secondary" : "primary"}
+                            size="small"
+                            variant="outlined"
                           />
+                          {isFuzzer && row.status && (
+                            <Chip
+                              label={row.status.toUpperCase()}
+                              color={row.status === "published" ? "success" : "default"}
+                              size="small"
+                              sx={{ ml: 0.5 }}
+                            />
+                          )}
                         </TableCell>
                         <TableCell>
                           <strong>{row.cve_id || row.crash_id}</strong>
@@ -349,12 +357,20 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const [year, month] = params.month.split('-');
-  
+
+  // Only published records are findings. ASB records are always published;
+  // fuzzer records must have passed the lifecycle to status === 'published'.
+  const isPublished = (item) => {
+    if (item.source === "asb" || (item.cve_id && !item.cve_id.startsWith("CRASH-"))) return true;
+    return item.status === "published";
+  };
+
   // Filter all items for the month (both ASB and Fuzzer items)
   const initialMonthData = (data || []).filter((item) => {
+    if (!isPublished(item)) return false;
     if (!item.date) return false;
     const itemDate = new Date(item.date);
-    return itemDate.getFullYear() === parseInt(year) && 
+    return itemDate.getFullYear() === parseInt(year) &&
            (itemDate.getMonth() + 1) === parseInt(month);
   });
 

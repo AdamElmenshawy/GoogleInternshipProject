@@ -1,25 +1,37 @@
 /**
- * AOSP Build Blueprint for Stagefright HEVC Parser Fuzzer
+ * AOSP Build Blueprint for the HEVC-in-MP4 Extractor Fuzzer.
+ *
+ * AOSP has no standalone HEVC extractor — HEVC parsing lives in the
+ * MPEG4Extractor. This mirrors the real AOSP mp4_extractor_fuzzer build
+ * (frameworks/av/media/extractors/fuzzers/Android.bp): it inherits
+ * extractor-fuzzer-defaults (which provides libextractorfuzzerbase and the
+ * ExtractorFuzzerBase headers) and links the real libmp4extractor.
+ *
+ * Build: lunch aosp_cf_x86_64-userdebug && m hevc_extractor_fuzzer
  */
 cc_fuzz {
-    name: "hevc_parser_fuzzer",
+    name: "hevc_extractor_fuzzer",
+    defaults: [
+        "extractor-fuzzer-defaults",
+    ],
     host_supported: true,
-    device_supported: true,
 
     srcs: [
-        "hevc_parser_fuzzer.cpp",
+        "hevc_extractor_fuzzer.cpp",
+    ],
+
+    include_dirs: [
+        "frameworks/av/media/extractors/mp4",
+    ],
+
+    header_libs: [
+        "libaudioclient_headers",
     ],
 
     static_libs: [
-        "libstagefright_soft_c2hevcdec",
-        "libstagefright_foundation",
-        "libcodec2_soft_common",
-    ],
-
-    shared_libs: [
-        "liblog",
-        "libutils",
-        "libcutils",
+        "libstagefright_id3",
+        "libstagefright_esds",
+        "libmp4extractor",
     ],
 
     corpus: [
@@ -32,11 +44,11 @@ cc_fuzz {
         cc: [
             "android-security@google.com",
         ],
-        componentid: 25690, // AOSP Media Framework
+        componentid: 87896, // Android media component ID
         hotlists: [
             "4593311",
         ],
-        description: "Fuzzer targeting HEVC bitstream NAL decoding in libstagefright",
+        description: "Fuzzer targeting HEVC (H.265) track parsing in the real MPEG4Extractor",
         vector: "remote",
         service_privilege: "constrained",
         users: "multi_user",

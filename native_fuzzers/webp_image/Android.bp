@@ -1,6 +1,11 @@
+/**
+ * AOSP Build Blueprint for the WebP Image Parser Fuzzer.
+ *
+ * Build: lunch aosp_cf_x86_64-userdebug && m webp_parser_fuzzer
+ */
 cc_fuzz {
     name: "webp_parser_fuzzer",
-    host_supported: true,
+    host_supported: false,
     device_supported: true,
 
     srcs: [
@@ -9,7 +14,6 @@ cc_fuzz {
 
     static_libs: [
         "libwebp-decode",
-        "libwebp-encode",
     ],
 
     shared_libs: [

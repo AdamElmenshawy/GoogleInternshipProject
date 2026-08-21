@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import axios from "axios";
 import dotenv from "dotenv";
 import fs from "fs";
@@ -8,13 +8,12 @@ dotenv.config();
 
 const OSV_API_URL = "https://api.osv.dev/v1/vulns/";
 const geminiApiKey = process.env.GEMINI_API_KEY;
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
 let genAI = null;
-let model = null;
 
 if (geminiApiKey) {
-    genAI = new GoogleGenerativeAI(geminiApiKey);
-    model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    genAI = new GoogleGenAI({ apiKey: geminiApiKey });
 }
 
 export async function fetchJsonData(url) {
@@ -63,26 +62,28 @@ function sleep(ms) {
 }
 
 export async function processWithGemini(osvDetails) {
-    if (!model) {
+    if (!genAI) {
         if (!process.env.GEMINI_API_KEY) {
             console.warn("GEMINI_API_KEY is not set. Using fallback technical summary.");
             return osvDetails.details || osvDetails.summary || "Security vulnerability reported in Android Security Bulletin.";
         }
-        genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-        model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     }
 
     try {
         const prompt = `Analyze and summarize this security vulnerability in clear, non-technical terms:\n\n${JSON.stringify(osvDetails, null, 2)}`;
-        const result = await model.generateContent(prompt);
+        const result = await genAI.models.generateContent({
+            model: GEMINI_MODEL,
+            contents: prompt,
+        });
 
-        console.log("Gemini API Response:", JSON.stringify(result, null, 2));
-
-        const summary = result.response ? result.response.text() : "No summary returned";
+        const summary = result.text || "No summary returned";
         console.log("Generated Summary:", summary);
         return summary;
     } catch (error) {
         console.error("Error processing data with Gemini AI:", error.message);
+        // Return a sentinel the caller can detect; it is stored as a failed
+        // summary_status, never as content.
         return "Error generating summary.";
     }
 }
@@ -143,8 +144,9 @@ export async function processVulnerabilities(data, filename) {
         }
 
         const geminiSummary = await processWithGemini(osvDetails);
-        
-        if (!geminiSummary || geminiSummary === "Error generating summary.") {
+        const summaryFailed = !geminiSummary || geminiSummary === "Error generating summary.";
+
+        if (summaryFailed) {
             console.warn(`No summary generated for CVE: ${vuln.cve_id}`);
         }
 
@@ -154,8 +156,10 @@ export async function processVulnerabilities(data, filename) {
             severity: vuln.severity,
             components: vuln.components,
             date: vuln.date,
-            summary: geminiSummary,
-            modelVersion: "gemini-1.5-flash",
+            summary: summaryFailed ? "" : geminiSummary,
+            summary_status: summaryFailed ? "failed" : "ok",
+            modelVersion: GEMINI_MODEL,
+            model_version: GEMINI_MODEL,
         };
 
         appendToFile(result, filename);

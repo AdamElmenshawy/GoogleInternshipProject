@@ -1,3 +1,8 @@
+/**
+ * AOSP Build Blueprint for the SurfaceFlinger Binder Fuzzer.
+ *
+ * Build: lunch aosp_cf_x86_64-userdebug && m surface_flinger_fuzzer
+ */
 cc_fuzz {
     name: "surface_flinger_fuzzer",
     host_supported: false,
@@ -7,17 +12,14 @@ cc_fuzz {
         "surface_flinger_fuzzer.cpp",
     ],
 
-    static_libs: [
-        "libsurfaceflinger",
-        "libgui",
+    // service_fuzzer_defaults provides the fuzzService() driver
+    // (libbinder_random_parcel) plus libbase/libcutils and the binder libs.
+    defaults: [
+        "service_fuzzer_defaults",
     ],
 
     shared_libs: [
-        "libbinder",
-        "libutils",
-        "libcutils",
         "liblog",
-        "libui",
     ],
 
     fuzz_config: {

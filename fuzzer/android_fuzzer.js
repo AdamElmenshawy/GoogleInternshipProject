@@ -5,14 +5,24 @@ import path from "path";
 
 /**
  * Android Fuzzing Harness for testing newer Android builds (Android 14/15, API 34/35).
- * Capable of live ADB execution and offline high-fidelity simulation.
+ *
+ * Modes:
+ *   - "device" (default): live ADB execution against a connected device/emulator.
+ *     Fails loudly if no device is present — it never silently falls back.
+ *   - "simulation": offline dry-run that emits clearly-marked synthetic crash
+ *     artifacts. Simulation is DISABLED by default and must be explicitly opted
+ *     into via `--dry-run` or `FUZZER_MODE=simulation`. Every simulated output
+ *     carries `source: "simulation"` so downstream stages refuse to ingest it
+ *     as real data.
  */
 export class AndroidFuzzer {
   constructor(options = {}) {
     this.targetBuild = options.targetBuild || "Android 15 (VanillaIceCream - API 35)";
-    this.mode = options.mode || (this.checkAdbAvailable() ? "adb" : "simulation");
+    this.mode = options.mode || "device";
     this.iterationCount = options.iterations || 10;
     this.verbose = options.verbose ?? true;
+    // Simulation is only reachable when the caller explicitly opts in.
+    this.simulationAllowed = options.simulationAllowed ?? false;
   }
 
   /**
@@ -113,17 +123,30 @@ export class AndroidFuzzer {
    * Executes a fuzz test iteration against live ADB or generates simulated crash logs.
    */
   async runFuzzIteration(index) {
-    if (this.mode === "adb") {
+    if (this.mode === "adb" || this.mode === "device") {
       return this.runLiveAdbFuzz(index);
-    } else {
+    } else if (this.mode === "simulation") {
+      if (!this.simulationAllowed) {
+        throw new Error(
+          "Simulation mode is disabled. Set FUZZER_MODE=simulation (or pass --dry-run) explicitly to override."
+        );
+      }
       return this.runSimulatedFuzz(index);
     }
+    throw new Error(`Unknown fuzzer mode: ${this.mode}`);
   }
 
   /**
    * Fuzzes live ADB targets.
    */
   async runLiveAdbFuzz(index) {
+    if (!this.checkAdbAvailable()) {
+      throw new Error(
+        "No ADB device detected. Device mode requires a connected, authorized device. " +
+        "If you are testing without hardware, pass --dry-run (or set FUZZER_MODE=simulation) explicitly."
+      );
+    }
+
     const intent = this.generateIntentMutations();
     const cmd = `adb shell am broadcast -a ${intent.action} --es data "${intent.payload.value.substring(0, 100)}"`;
     if (this.verbose) console.log(`[Fuzzer ADB #${index + 1}] Executing: ${cmd}`);
@@ -142,7 +165,8 @@ export class AndroidFuzzer {
           rawCrash: crashLogs,
           targetBuild: this.targetBuild,
           timestamp: new Date().toISOString(),
-          input: intent
+          input: intent,
+          source: "fuzzer"
         };
       }
     } catch {
@@ -153,6 +177,8 @@ export class AndroidFuzzer {
 
   /**
    * Generates realistic Android 14/15 AOSP crash samples across different components.
+   * DRY-RUN ONLY: every artifact is explicitly marked `source: "simulation"` so the
+   * pipeline refuses to treat it as a real finding.
    */
   async runSimulatedFuzz(index) {
     const crashTemplates = [
@@ -253,6 +279,8 @@ backtrace:
       rawCrash: template.logcat,
       targetBuild: this.targetBuild,
       timestamp: new Date().toISOString(),
+      source: "simulation",
+      simulated: true,
       simulatedMeta: {
         process: template.process,
         component: template.component,
@@ -292,8 +320,21 @@ backtrace:
 
 // CLI runner
 if (process.argv[1] && process.argv[1].endsWith("android_fuzzer.js")) {
-  const fuzzer = new AndroidFuzzer({ mode: "simulation", iterations: 4 });
+  const args = process.argv.slice(2);
+  const dryRun = args.includes("--dry-run") || args.includes("-d");
+  const mode = process.env.FUZZER_MODE || (dryRun ? "simulation" : "device");
+  const iterations = parseInt(process.env.FUZZ_ITERATIONS || "4", 10);
+
+  const fuzzer = new AndroidFuzzer({
+    mode,
+    iterations,
+    simulationAllowed: dryRun || process.env.FUZZER_MODE === "simulation",
+  });
+
   fuzzer.startFuzzingCampaign().then(crashes => {
-    console.log(`Discovered ${crashes.length} crashes in test mode.`);
+    console.log(`Discovered ${crashes.length} crash artifacts in ${mode} mode.`);
+  }).catch(err => {
+    console.error(`[Android Fuzzer] ${err.message}`);
+    process.exit(1);
   });
 }
